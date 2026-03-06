@@ -11,6 +11,7 @@
 :root{
 --bg:#FFF5F7; 
 --main:#FFB6C1; 
+--bright-pink: #FFD1DC;
 --dark:#FF8DA1; 
 --white:#FFFFFF;
 --glow:rgba(255, 182, 193, 0.5);
@@ -39,36 +40,57 @@ transform: scale(1.1);
 }
 
 .container{
-max-width:500px;
+max-width:600px; /* ขยายกว้างขึ้นเล็กน้อยเพื่อวางสองคอลัมน์ */
 width:100%;
 padding:20px 15px 40px;
 z-index: 1;
+}
+
+/* หัวข้อใหญ่ */
+.main-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #FFF; /* สีขาวสว่าง */
+    text-shadow: 0 0 10px var(--main), 2px 2px 0px var(--dark);
+    margin-bottom: 5px;
+}
+
+.sub-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--bright-pink);
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+    margin: 10px 0 20px;
 }
 
 .section{
 background: rgba(255, 255, 255, 0.9); 
 backdrop-filter: blur(15px);
 border-radius: 30px;
-padding:25px 20px;
+padding:20px;
 margin-bottom:20px;
-border: none;
 box-shadow: 0 10px 25px var(--glow);
-transition: transform 0.3s ease;
 }
 
-h1, h2, h3 { 
-    color: var(--main); 
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-    margin-bottom: 15px;
+/* ปรับ Layout ผลงานและราคาให้อยู่ข้างกัน */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr; /* สัดส่วนซ้ายขวา */
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 480px) {
+    .grid-container { grid-template-columns: 1fr; } /* มือถือให้ซ้อนกันเหมือนเดิมเพื่อให้อ่านง่าย */
 }
 
 .center{text-align:center;}
 
 .logo{
-width:150px;height:150px;
+width:140px;height:140px;
 border-radius:50%;
 overflow:hidden;
-margin:0 auto 20px;
+margin:0 auto 15px;
 box-shadow: 0 8px 30px var(--glow);
 border: 5px solid var(--white);
 }
@@ -76,142 +98,60 @@ border: 5px solid var(--white);
 .logo img{width:100%;height:100%;object-fit:cover;}
 
 .badges{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:10px;
-margin-bottom:20px;
+display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:20px;
 }
 
 .badge{
-background: var(--white);
-padding:8px 18px;
-border-radius:25px;
-box-shadow: 0 4px 10px var(--glow);
-font-size:14px;
-color: var(--dark);
+background: var(--white); padding:6px 15px; border-radius:20px;
+box-shadow: 0 4px 10px var(--glow); font-size:13px; color: var(--dark);
 }
 
 .status-dot {
-  height: 10px; width: 10px;
-  background-color: #83E092;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 8px;
-  box-shadow: 0 0 10px rgba(131, 224, 146, 0.6);
-  animation: blink 2s infinite;
+  height: 10px; width: 10px; background-color: #83E092; border-radius: 50%;
+  display: inline-block; margin-right: 5px; animation: blink 2s infinite;
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.1); }
-}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
 .btn{
-display:flex;
-align-items: center;
-justify-content: center;
-text-align:center;
-padding:14px;
-border-radius:25px;
-text-decoration:none;
-margin-top:15px;
-transition: all 0.3s ease;
-cursor: pointer;
+display:flex; align-items: center; justify-content: center;
+padding:12px; border-radius:25px; text-decoration:none;
+transition: all 0.3s ease; font-weight: 600;
 }
 
-.btn-outline{
-background: var(--white);
-color: var(--dark);
-box-shadow: 0 4px 15px var(--glow);
-}
+.btn-outline{ background: var(--white); color: var(--dark); box-shadow: 0 4px 15px var(--glow); }
+.btn-main{ background: linear-gradient(135deg, var(--main), #FFD1DC); color: var(--white); box-shadow: 0 6px 20px var(--glow); margin-top: 10px;}
 
-.btn-main{
-background: linear-gradient(135deg, var(--main), #FFD1DC);
-color: var(--white);
-box-shadow: 0 6px 20px var(--glow);
-border:none;
+/* --- Slideshow --- */
+.slideshow-container {
+  position: relative; overflow: hidden; border-radius: 15px;
 }
+.mySlides { display: none; }
+.mySlides img { width: 100%; display: block; }
 
-/* --- Improved Scrollable Slider Styles --- */
-.slider-wrapper {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  border-radius: 20px;
-}
-
-.slides-container {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* ซ่อน scrollbar ใน Firefox */
-}
-
-.slides-container::-webkit-scrollbar {
-  display: none; /* ซ่อน scrollbar ใน Chrome/Safari */
-}
-
-.slide-item {
-  flex: 0 0 100%;
-  scroll-snap-align: start;
-  width: 100%;
-}
-
-.slide-item img {
-  width: 100%;
-  display: block;
-  pointer-events: none; /* ป้องกันการลากรูปภาพผิดพลาด */
-}
-
-.dots-container {
-  text-align: center;
-  margin-top: 15px;
-}
-
+.dots-container { text-align: center; margin-top: 8px; }
 .dot {
-  cursor: pointer;
-  height: 10px;
-  width: 10px;
-  margin: 0 5px;
-  background-color: #fff;
-  border: 2px solid var(--main);
-  border-radius: 50%;
-  display: inline-block;
-  transition: all 0.3s ease;
+  cursor: pointer; height: 8px; width: 8px; margin: 0 3px;
+  background-color: #fff; border: 1.5px solid var(--main);
+  border-radius: 50%; display: inline-block;
 }
+.dot.active { background-color: var(--main); box-shadow: 0 0 8px var(--main); }
 
-.dot.active {
-  background-color: var(--main);
-  box-shadow: 0 0 12px var(--main);
-  transform: scale(1.2);
-}
-
+/* --- Price List --- */
 .price-row{
-display:flex;
-justify-content:space-between;
-margin-bottom:10px;
-background: var(--accent-pink);
-padding:12px 18px;
-border-radius:20px;
-color: var(--dark);
+display:flex; flex-direction: column; gap: 5px; margin-bottom:10px;
+background: var(--accent-pink); padding:10px; border-radius:15px; color: var(--dark);
 }
-
 .price-tag{
-background: var(--white);
-color: var(--main);
-padding:3px 15px;
-border-radius:20px;
-font-size:14px;
-font-weight: 600;
+background: var(--white); color: var(--main); padding:2px 10px;
+border-radius:10px; font-size:13px; font-weight: 600; align-self: flex-start;
 }
+.price-label { font-size: 14px; font-weight: 500; }
 
-.footer{ text-align:center; margin-top:30px; }
+.footer{ text-align:center; margin-top:20px; }
 .socials{ display:flex; gap:8px; justify-content:center; margin-top:15px; }
 .socials a{
-  flex:1; max-width:100px; padding:10px; border-radius:20px;
+  flex:1; padding:10px; border-radius:20px;
   background: var(--white); text-decoration:none; color: var(--dark);
   font-size:13px; box-shadow: 0 4px 10px var(--glow);
 }
@@ -222,59 +162,65 @@ font-weight: 600;
 <body>
 <div class="container">
 
-  <div class="section center" style="background:transparent; box-shadow:none;">
+  <div class="center" style="margin-bottom: 20px;">
     <div class="logo">
       <img src="Untitled36_20260305220245.jpeg" alt="Arenar Sonin Logo">
     </div>
-    <h1 style="font-size: 2.2rem;">Arenar Sonin 🥞</h1>
-    <p style="color: var(--dark); margin:10px 0 20px;">รับสร้างบ้านเกม Heartopia 🏠🥛🍞</p>
+    <h1 class="main-title">Arenar Sonin 🥞</h1>
+    <p class="sub-title">รับสร้างบ้านเกม Heartopia 🏠🥛🍞</p>
     <div class="badges">
       <div class="badge">🏡 สร้างบ้าน</div>
       <div class="badge">✨ ตกแต่งภายใน</div>
       <div class="badge">🎨 รับบรีฟตามใจ</div>
     </div>
-    <a href="https://www.facebook.com/share/174H8Bq6Lz/?mibextid=wwXIfr" class="btn btn-outline" target="_blank">
-      <span class="status-dot"></span> สถานะคิวงานว่างพร้อมเริ่มทำ ✨
+    <a href="https://www.facebook.com/share/174H8Bq6Lz/?mibextid=wwXIfr" class="btn btn-outline" style="display:inline-flex; padding: 10px 25px;">
+      <span class="status-dot"></span> คิวงานว่างพร้อมเริ่มทำ ✨
     </a>
   </div>
 
-  <div class="section">
-    <h2 class="center">✨ ตัวอย่างผลงาน</h2>
+  <div class="grid-container">
     
-    <div class="slider-wrapper">
-      <div class="slides-container" id="slider">
-        <div class="slide-item"><img src="IMG_4856.png"></div>
-        <div class="slide-item"><img src="IMG_4855.png"></div>
-        <div class="slide-item"><img src="IMG_4857.png"></div>
-        <div class="slide-item"><img src="IMG_4858.png"></div>
+    <div class="section" style="margin-bottom:0;">
+      <h3 class="center" style="font-size: 1.1rem; color: var(--dark);">✨ ผลงาน</h3>
+      <div class="slideshow-container">
+        <div class="mySlides fade"><img src="IMG_4856.png"></div>
+        <div class="mySlides fade"><img src="IMG_4855.png"></div>
+        <div class="mySlides fade"><img src="IMG_4857.png"></div>
+        <div class="mySlides fade"><img src="IMG_4858.png"></div>
       </div>
+      <div class="dots-container">
+        <span class="dot" onclick="currentSlide(1)"></span> 
+        <span class="dot" onclick="currentSlide(2)"></span> 
+        <span class="dot" onclick="currentSlide(3)"></span> 
+        <span class="dot" onclick="currentSlide(4)"></span> 
+      </div>
+      <p class="center small" style="font-size: 11px;">🎀 ผลงานเพิ่มเติมหน้าเฟส</p>
     </div>
 
-    <div class="dots-container">
-      <span class="dot active" onclick="scrollToSlide(0)"></span> 
-      <span class="dot" onclick="scrollToSlide(1)"></span> 
-      <span class="dot" onclick="scrollToSlide(2)"></span> 
-      <span class="dot" onclick="scrollToSlide(3)"></span> 
+    <div class="section" style="margin-bottom:0; display:flex; flex-direction:column; justify-content:center;">
+      <h3 class="center" style="font-size: 1.1rem; color: var(--dark);">💰 ราคา</h3>
+      <div class="price-row">
+        <span class="price-label">บ้านปกติ</span>
+        <span class="price-tag">เริ่ม 150฿</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">9 แปลง+</span>
+        <span class="price-tag">เริ่ม 400฿</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">18 แปลงเต็ม</span>
+        <span class="price-tag">เริ่ม 1,000฿</span>
+      </div>
+      <a href="https://www.facebook.com/share/174H8Bq6Lz/?mibextid=wwXIfr" class="btn btn-main" style="font-size: 12px;">จองคิว 🥛</a>
     </div>
 
-    <p class="center small" style="margin-top: 15px; font-size: 13px;">
-      🎀 ผลงานเพิ่มเติมไฮไลท์หน้าเฟส
-    </p>
-  </div>
-
-  <div class="section">
-    <h2>💰 ราคางานสร้างบ้าน</h2>
-    <div class="price-row"><span>บ้านปกติ</span><span class="price-tag">เริ่มต้น 150฿</span></div>
-    <div class="price-row"><span>บ้าน 9 แปลงขึ้นไป</span><span class="price-tag">เริ่มต้น 400฿</span></div>
-    <div class="price-row"><span>บ้าน 18 แปลงเต็ม</span><span class="price-tag">เริ่มต้น 1,000฿</span></div>
-    <a href="https://www.facebook.com/share/174H8Bq6Lz/?mibextid=wwXIfr" class="btn btn-main">สอบถามประเมินราคา 🥛</a>
   </div>
 
   <div class="footer">
     <a href="https://www.facebook.com/share/174H8Bq6Lz/?mibextid=wwXIfr" class="btn btn-main">ติดต่อสอบถามทาง Facebook 🎀</a>
     <div class="socials">
       <a href="https://www.facebook.com/share/174H8Bq6Lz/?mibextid=wwXIfr">Facebook</a>
-      <a href="#">Instagram</a>
+      <a href="https://www.tiktok.com/@arenar.sonin?_r=1&_t=ZS-94SVNxA7Zg7" target="_blank">TikTok</a>
       <a href="#">Line</a>
     </div>
     <p class="small">© 2026 Arenar Sonin 🍞🥞</p>
@@ -283,35 +229,24 @@ font-weight: 600;
 </div>
 
 <script>
-const slider = document.getElementById('slider');
-const dots = document.querySelectorAll('.dot');
+let slideIndex = 1;
+showSlides(slideIndex);
 
-// ฟังก์ชันคลิกที่จุดเพื่อเลื่อน
-function scrollToSlide(index) {
-  const slideWidth = slider.clientWidth;
-  slider.scrollTo({
-    left: slideWidth * index,
-    behavior: 'smooth'
-  });
+function currentSlide(n) { showSlides(slideIndex = n); }
+
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) { slides[i].style.display = "none"; }
+  for (i = 0; i < dots.length; i++) { dots[i].className = dots[i].className.replace(" active", ""); }
+  slides[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].className += " active";
 }
 
-// อัปเดตจุด Active เมื่อมีการเลื่อน (รูดนิ้วหรือเลื่อนเอง)
-slider.addEventListener('scroll', () => {
-  const index = Math.round(slider.scrollLeft / slider.clientWidth);
-  dots.forEach((dot, i) => {
-    dot.classList.toggle('active', i === index);
-  });
-});
-
-// ระบบเลื่อนอัตโนมัติ (จะหยุดชั่วคราวถ้าผู้ใช้กำลังเลื่อนเอง)
-let autoSlide = setInterval(() => {
-  let nextIndex = Math.round(slider.scrollLeft / slider.clientWidth) + 1;
-  if (nextIndex >= dots.length) nextIndex = 0;
-  scrollToSlide(nextIndex);
-}, 4000);
-
-// หยุด Auto Slide เมื่อมีการสัมผัส
-slider.addEventListener('touchstart', () => clearInterval(autoSlide));
+setInterval(() => { slideIndex++; showSlides(slideIndex); }, 4000);
 </script>
 
 </body>
