@@ -117,6 +117,7 @@ border-radius:25px;
 text-decoration:none;
 margin-top:15px;
 transition: all 0.3s ease;
+cursor: pointer;
 }
 
 .btn-outline{
@@ -129,22 +130,40 @@ box-shadow: 0 4px 15px var(--glow);
 background: linear-gradient(135deg, var(--main), #FFD1DC);
 color: var(--white);
 box-shadow: 0 6px 20px var(--glow);
+border:none;
 }
 
-/* --- Slideshow Styles --- */
-.slideshow-container {
+/* --- Improved Scrollable Slider Styles --- */
+.slider-wrapper {
   position: relative;
-  margin: auto;
+  width: 100%;
   overflow: hidden;
   border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-.mySlides { display: none; }
+.slides-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* ซ่อน scrollbar ใน Firefox */
+}
 
-.mySlides img {
+.slides-container::-webkit-scrollbar {
+  display: none; /* ซ่อน scrollbar ใน Chrome/Safari */
+}
+
+.slide-item {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  width: 100%;
+}
+
+.slide-item img {
   width: 100%;
   display: block;
+  pointer-events: none; /* ป้องกันการลากรูปภาพผิดพลาด */
 }
 
 .dots-container {
@@ -168,11 +187,6 @@ box-shadow: 0 6px 20px var(--glow);
   background-color: var(--main);
   box-shadow: 0 0 12px var(--main);
   transform: scale(1.2);
-}
-
-.fade { animation: fadeEffect 0.8s; }
-@keyframes fadeEffect {
-  from {opacity: 0.4} to {opacity: 1}
 }
 
 .price-row{
@@ -227,22 +241,24 @@ font-weight: 600;
   <div class="section">
     <h2 class="center">✨ ตัวอย่างผลงาน</h2>
     
-    <div class="slideshow-container">
-      <div class="mySlides fade"><img src="IMG_4856.png"></div>
-      <div class="mySlides fade"><img src="IMG_4855.png"></div>
-      <div class="mySlides fade"><img src="IMG_4857.png"></div>
-      <div class="mySlides fade"><img src="IMG_4858.png"></div>
+    <div class="slider-wrapper">
+      <div class="slides-container" id="slider">
+        <div class="slide-item"><img src="IMG_4856.png"></div>
+        <div class="slide-item"><img src="IMG_4855.png"></div>
+        <div class="slide-item"><img src="IMG_4857.png"></div>
+        <div class="slide-item"><img src="IMG_4858.png"></div>
+      </div>
     </div>
 
     <div class="dots-container">
-      <span class="dot" onclick="currentSlide(1)"></span> 
-      <span class="dot" onclick="currentSlide(2)"></span> 
-      <span class="dot" onclick="currentSlide(3)"></span> 
-      <span class="dot" onclick="currentSlide(4)"></span> 
+      <span class="dot active" onclick="scrollToSlide(0)"></span> 
+      <span class="dot" onclick="scrollToSlide(1)"></span> 
+      <span class="dot" onclick="scrollToSlide(2)"></span> 
+      <span class="dot" onclick="scrollToSlide(3)"></span> 
     </div>
 
     <p class="center small" style="margin-top: 15px; font-size: 13px;">
-      🎀 ผลงานเพิ่มเติมไฮไลท์หน้าเฟสแบบมินิมอล
+      🎀 ผลงานเพิ่มเติมไฮไลท์หน้าเฟส
     </p>
   </div>
 
@@ -267,34 +283,35 @@ font-weight: 600;
 </div>
 
 <script>
-let slideIndex = 1;
-showSlides(slideIndex);
+const slider = document.getElementById('slider');
+const dots = document.querySelectorAll('.dot');
 
-function currentSlide(n) {
-  showSlides(slideIndex = n);
+// ฟังก์ชันคลิกที่จุดเพื่อเลื่อน
+function scrollToSlide(index) {
+  const slideWidth = slider.clientWidth;
+  slider.scrollTo({
+    left: slideWidth * index,
+    behavior: 'smooth'
+  });
 }
 
-function showSlides(n) {
-  let i;
-  let slides = document.getElementsByClassName("mySlides");
-  let dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {slideIndex = 1}    
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";  
-  }
-  for (i = 0; i < dots.length; i++) {
-    dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";  
-  dots[slideIndex-1].className += " active";
-}
+// อัปเดตจุด Active เมื่อมีการเลื่อน (รูดนิ้วหรือเลื่อนเอง)
+slider.addEventListener('scroll', () => {
+  const index = Math.round(slider.scrollLeft / slider.clientWidth);
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === index);
+  });
+});
 
-// เลื่อนอัตโนมัติทุกๆ 4 วินาที
-setInterval(() => {
-  slideIndex++;
-  showSlides(slideIndex);
+// ระบบเลื่อนอัตโนมัติ (จะหยุดชั่วคราวถ้าผู้ใช้กำลังเลื่อนเอง)
+let autoSlide = setInterval(() => {
+  let nextIndex = Math.round(slider.scrollLeft / slider.clientWidth) + 1;
+  if (nextIndex >= dots.length) nextIndex = 0;
+  scrollToSlide(nextIndex);
 }, 4000);
+
+// หยุด Auto Slide เมื่อมีการสัมผัส
+slider.addEventListener('touchstart', () => clearInterval(autoSlide));
 </script>
 
 </body>
